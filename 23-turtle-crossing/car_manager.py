@@ -8,31 +8,26 @@ MOVE_INCREMENT = 10
 
 class CarManager():
     
-    def __init__(self, how_many):
+    def __init__(self):
         self.all_cars = []
-        for _ in range(how_many):
-            self.create_car()
-        
-        
+        self.move_speed = STARTING_MOVE_DISTANCE
 
     def create_car(self):
-        c = Turtle()
-        c.penup()
-        c.color(random.choice(COLORS))
-        c.shape("square")
-        c.shapesize(stretch_wid=1, stretch_len=2)
-        c.setheading(180)
-        x_cor = random.randint(-299, 300)
-        y_cor = random.randint(-250, 250)
-        c.goto(x_cor, y_cor)
-        self.all_cars.append(c)
+        random_chance = random.randint(1, 6)
+        if random_chance == 1:
+            c = Turtle("square")
+            c.penup()
+            c.color(random.choice(COLORS))
+            c.shapesize(stretch_wid=1, stretch_len=2)
+            y_cor = random.randint(-250, 250)
+            c.goto(300, y_cor)
+            self.all_cars.append(c)
 
     def move_cars(self):
         for c in self.all_cars:
-            if c.xcor() < -299:
-                new_x = c.xcor() + 600
-                same_y = c.ycor()
-                c.goto(new_x, same_y)
-            c.forward(MOVE_INCREMENT)
+            c.backward(self.move_speed)
+            
+    def level_up(self):
+        self.move_speed += MOVE_INCREMENT
     
 
