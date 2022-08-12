@@ -55,17 +55,12 @@ class Snake:
         if self.head.heading() not in [180, -180]:
             self.head.setheading(0)
 
-    def check_for_collision(self):
-        pass
 
-
-    def eat_grow(self):
-        pass
-
-
-
-
-# t = Turtle()
-
+    def reset(self):
+        for s in self.segments:
+            s.hideturtle()
+        self.segments = []
+        self.create_snake()
+        self.head = self.segments[0]
 
 
