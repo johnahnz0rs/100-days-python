@@ -28,15 +28,17 @@ states = df["state"].to_list()
 labels = turtle.Turtle()
 labels.penup()
 labels.hideturtle()
-
-
 def write_state_label(state, coord):
     labels.goto(coord)
     labels.write(state, font=FONT, align=ALIGNMENT)
 
 
+
+# gameplay
 while len(correct_guesses) < 50:
+    # make a guess
     guess = screen.textinput(title=f"{len(correct_guesses)}/50 States Correct", prompt="Name a state").title()
+    # secret command to exit
     if guess == "Exit":
         missing_states = []
         for s in states:
@@ -45,6 +47,7 @@ while len(correct_guesses) < 50:
         output = pandas.DataFrame(missing_states)
         output.to_csv("missing_states.csv")
         break
+    # if guess is correct like a mafuqa
     if guess not in correct_guesses and guess in states:
         correct_guesses.append(guess)
         state_info = df[df["state"] == guess]
