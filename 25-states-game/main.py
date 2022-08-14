@@ -40,10 +40,7 @@ while len(correct_guesses) < 50:
     guess = screen.textinput(title=f"{len(correct_guesses)}/50 States Correct", prompt="Name a state").title()
     # secret command to exit
     if guess == "Exit":
-        missing_states = []
-        for s in states:
-            if s not in correct_guesses:
-                missing_states.append(s)
+        missing_states = [s for s in states if s not in correct_guesses]
         output = pandas.DataFrame(missing_states)
         output.to_csv("missing_states.csv")
         break
