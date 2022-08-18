@@ -11,15 +11,11 @@ FONT_NAME = "Courier"
 WORK_MIN = 25
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
+round_counter = 0
+timer = None
 
 
 
-
-
-
-
-# the assignment
-# the assignment
 # the assignment
 '''
 1. pomodoro goes 8 rounds; use a round counter
@@ -31,26 +27,45 @@ LONG_BREAK_MIN = 20
 
 '''
 
-
-round_counter = 1
-
 # ---------------------------- TIMER RESET ------------------------------- # 
 def reset_timer():
-    pass
-    # countdown(250)
+    # reset title_label, checkmarks, time, round_counter
+    window.after_cancel(timer)
+    global round_counter
+    round_counter = 0
+    title_label.config(text="TIMER", fg="#000")
+    checkmarks_label.config(text="")
+    canvas.itemconfig(timer_text, text="00:00")
+
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
-    global title_label
-    title_label.config(text="WORK", fg=GREEN)
-    countdown(5)
-    # countdown(250)
+    # how many checkmarks?
+    global round_counter
+    round_counter += 1
+    how_many_checks = math.floor(round_counter / 2)
+    checks_text = ""
+    for _ in range(how_many_checks):
+        checks_text += "✅"
+    checkmarks_label.config(text=checks_text)
+
+    # determine action based on round: update title_label, start new countdown
+    if round_counter % 8 == 0:
+        title_label.config(text="REST", fg=RED)
+        # countdown(LONG_BREAK_MIN * 60)
+        countdown(20)
+    elif round_counter % 2 == 0:
+        title_label.config(text="REST", fg=PINK)
+        # countdown(SHORT_BREAK_MIN * 60)
+        countdown(5)
+    else:
+        title_label.config(text="WORK", fg=GREEN)
+        # countdown(WORK_MIN * 60)
+        countdown(10)
 
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
 def countdown(count):
-    global round_counter
-
     # format & print remaining time
     count_min = math.floor(count / 60)
     count_sec = count % 60
@@ -58,56 +73,12 @@ def countdown(count):
         count_sec = f"0{count_sec}"
     canvas.itemconfig(timer_text, text=f"{count_min}:{count_sec}")
 
-    new_count = 0
+    # next step
     if count > 0:
-        new_count = count - 1
-        # window.after(1000, countdown, count-1)
-        print(f"{count} - continue countdown")
+        global timer
+        timer = window.after(1000, countdown, count-1)
     else:
-        
-        print(f"------------just finished round {round_counter}")
-        round_counter += 1
-        print(f"------------now starting round {round_counter}")
-        # reached 0:00 - change round
-
-        update_title_label(round_counter)
-        if round_counter % 2 == 0:
-            # this is a REST round
-            add_checkmark()
-            if round_counter % 8 == 0:
-                # this is a long rest = 20 min
-                new_count = LONG_BREAK_MIN
-            else:
-                # this is a short rest = 5 min
-                new_count = SHORT_BREAK_MIN
-        else:
-            # this is WORK = 25 min
-            new_count = WORK_MIN
-        
-    window.after(1000, countdown, new_count)
-
-
-def add_checkmark():
-    global checkmarks
-    global checkmarks_text
-    global lol
-    checkmarks_text += lol
-    checkmarks.config(text=checkmarks_text)
-
-def update_title_label(round):
-    global title_label
-    if round % 8 == 0:
-        new_title = "REST"
-        title_color = PINK
-    elif round % 2 == 0:
-        new_title = "REST"
-        title_color = RED
-    else:
-        new_title = "WORK"
-        title_color = GREEN
-    title_label.config(text=new_title, fg=title_color)
-
-
+        start_timer()
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -126,29 +97,21 @@ canvas.create_image(100, 112, image=tomato_img)
 timer_text = canvas.create_text(100, 130, text="00:00", fill="white", font=(FONT_NAME, 35, "bold"))
 canvas.grid(column=1, row=1)
 
-
 # title label
 title_label = Label(text="Timer", fg="#000", bg=YELLOW, font=(FONT_NAME, 50))
 title_label.grid(column=1, row=0)
 
-
 # start button
 start_button = Button(text="Start", highlightthickness=0, command=start_timer)
 start_button.grid(column=0, row=2)
-
 
 # reset button
 reset_button = Button(text="Reset", highlightthickness=0, command=reset_timer)
 reset_button.grid(column=2, row=2)
 
 # checkmarks
-# lol = "✓"
-lol = "✅"
-checkmarks_text = ""
-checkmarks = Label(text=checkmarks_text, fg=GREEN, bg=YELLOW)
-checkmarks.grid(column=1, row=3)
-
-
+checkmarks_label = Label(text="", fg=GREEN, bg=YELLOW)
+checkmarks_label.grid(column=1, row=3)
 
 window.mainloop()
 
