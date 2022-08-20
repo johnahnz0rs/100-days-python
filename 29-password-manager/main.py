@@ -19,6 +19,7 @@ from tkinter import *
 from tkinter import messagebox
 from random import choice, randint, shuffle
 import pyperclip
+import json
 
 BLACK = "#000"
 # FONT = ("Courier", 14, "bold")
@@ -64,12 +65,36 @@ def save():
     if len(website) == 0 or len(email) == 0 or len(password) == 0:
         messagebox.showwarning(title="Password Manager", message="Please enter a value for every field")
     else:
-        ok_to_save = messagebox.askokcancel(title=f"{website}", message=f"ok to save? \nemail/username: {email} \npassword: {password}")
-        if ok_to_save:
-            with open("data.txt", mode="a") as data:
-                data.write(f"{website} | {email} | {password}\n")
-                website_input.delete(0, END)
-                password_input.delete(0, END)
+        new_data = {
+            website: {
+                "email": email,
+                "password": password
+            }
+        }
+        try:
+            with open("data.json", mode="r") as data_file:
+                data = json.load(data_file)
+        except FileNotFoundError:
+            with open("data.json", "w") as data_file:
+                json.dump(new_data, data_file, indent=4)
+        else:
+            data.update(new_data)
+            with open("data.json", "w") as data_file:
+                json.dump(data, data_file, indent=4)
+        finally:
+            website_input.delete(0, END)
+            password_input.delete(0, END)
+
+
+
+
+# ---------------------------- FIND PASSWORD ------------------------------- #
+def find_password():
+    pass
+    # get the website
+    website = website_input.get().strip()
+    # get the json
+
 
 
 
