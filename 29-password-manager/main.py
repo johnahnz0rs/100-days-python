@@ -14,7 +14,7 @@
 # imports and constants
 # imports and constants
 # imports and constants
-from email import message
+from curses import BUTTON1_PRESSED
 from tkinter import *
 from tkinter import messagebox
 from random import choice, randint, shuffle
@@ -34,15 +34,17 @@ window.title("Password Manager")
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def generate_password():
-    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    letters_lower = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    letters_upper = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
     numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
 
-    pw_letters = [choice(letters) for _ in range(randint(8, 10))]
+    pw_letters_lower = [choice(letters_lower) for _ in range(randint(4, 5))]
+    pw_letters_upper = [choice(letters_upper) for _ in range(randint(4, 5))]
     pw_numbers = [choice(numbers) for _ in range(randint(2, 4))]
     pw_symbols = [choice(symbols) for _ in range(randint(2, 4))]
 
-    password_list = pw_letters + pw_numbers + pw_symbols
+    password_list = pw_letters_lower + pw_letters_upper + pw_numbers + pw_symbols
 
     shuffle(password_list)
 
@@ -52,7 +54,7 @@ def generate_password():
     password_input.insert(0, password)
     pyperclip.copy(password)
 
-    messagebox.showinfo(title="Password Manager", message="Password copied to clipboard.")
+    # messagebox.showinfo(title="Password Manager", message="Password copied to clipboard.")
 
 
 
@@ -93,7 +95,23 @@ def find_password():
     pass
     # get the website
     website = website_input.get().strip()
-    # get the json
+    # get the pw from json
+    if len(website) == 0:
+        messagebox.showwarning(title="Password Manager", message="Please enter a website.")
+    else:
+        try:
+            with open("data.json", mode="r") as data_file:
+                data = json.load(data_file)
+        except FileNotFoundError:
+            messagebox.showerror(title="Password Manager", message=f"No password saved for {website} \nYou may add a password now if you'd like. Namaste.")
+        else:
+            if website in data:
+                email = data[website]["email"]
+                password = data[website]["password"]
+                pyperclip.copy(password)
+                messagebox.showinfo(title="Password Manager", message=f"{website} \n\n{email} \n{password} \n\nPassword has been copied to clipboard.")
+            else:
+                messagebox.showinfo(title="Password Manager", message=f"No password saved for {website} \nYou may add a password now if you'd like. Namaste.")
 
 
 
@@ -113,9 +131,13 @@ website_label.grid(column=0, row=1)
 
 # website input
 website_val = StringVar(value="")
-website_input = Entry(textvariable=website_val, width=39)
+website_input = Entry(textvariable=website_val, width=21)
 website_input.grid(column=1, row=1, columnspan=2, sticky="w")
 website_input.focus()
+
+# search button
+search_button = Button(text="Search", highlightthickness=0, command=find_password, width=14)
+search_button.grid(column=2, row=1)
 
 # email/username label
 email_label = Label(text="Email/Username:", fg=BLACK, font=FONT)
