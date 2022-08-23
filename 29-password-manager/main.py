@@ -14,7 +14,6 @@
 # imports and constants
 # imports and constants
 # imports and constants
-from curses import BUTTON1_PRESSED
 from tkinter import *
 from tkinter import messagebox
 from random import choice, randint, shuffle
@@ -120,8 +119,8 @@ def find_password():
 # ---------------------------- UI SETUP ------------------------------- #
 
 # logo canvas
-canvas = Canvas(height=200, width=200)
 logo = PhotoImage(file="logo.png")
+canvas = Canvas(height=200, width=200)
 canvas.create_image(90, 90, image=logo)
 canvas.grid(column=1, row=0)
 
