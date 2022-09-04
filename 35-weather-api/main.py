@@ -13,8 +13,6 @@ TWILIO_KEY = os.getenv("TWILIO_KEY")
 TWILIO_PHONE = os.getenv("TWILIO_PHONE")
 JAHN_PHONE = os.getenv("JAHN_PHONE")
 
-# lat=34.050890&lon=-118.292180&cnt=3&appid=3ec68445e564b563e024374d589b9950
-
 # 1. get lat/long from latlong.net
 # 2. call the onecall api_version
 # 3. print the response's http status code
@@ -31,7 +29,7 @@ my_params = {
 response = requests.get(url="http://api.openweathermap.org/data/2.5/forecast?", params=my_params) # this api endpoint gets the forecast for every 3 hours for 5 days == 40 forecasts
 response.raise_for_status()
 data = response.json()
-
+1
 forecast_12_hr = data["list"][:4]
 txt_msg = ""
 
