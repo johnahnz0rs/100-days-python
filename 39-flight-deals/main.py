@@ -22,5 +22,6 @@ from notification_manager import NotificationManager
 
 my_dm = DataManager()
 sheet_data = my_dm.get_current_data()
+print(sheet_data)
 
 
