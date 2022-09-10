@@ -17,24 +17,18 @@ class DataManager:
 
     def get_current_data(self):
         get_endpoint = f"https://api.sheety.co/{SHEET_ID}/prices"
-        self.sheety_get = requests.get(url=get_endpoint, headers=HEADERS)
-        self.sheety_get.raise_for_status()
-        # self.sheety_json = self.sheety_get.json()
-        return self.sheety_get.json()["prices"]
+        sheety_get = requests.get(url=get_endpoint, headers=HEADERS)
+        sheety_get.raise_for_status()
+        return sheety_get.json()["prices"]
 
-    
-    # log_headers = {
-    # "Authorization": SHEET_AUTH
-    # }
-    # log_params = {
-    #     "workout": {
-    #         "date": date,
-    #         "time": time,
-    #         "exercise": log_exercise,
-    #         "duration": duration,
-    #         "calories": calories,
-    #     }
-    # }
-    # log_endpoint = f"https://api.sheety.co/{SHEET_ID}/{SHEET_TITLE}/workouts"
-    # log_response = requests.post(url=log_endpoint, headers=log_headers, json=log_params)
-    # log_response.raise_for_status()
+    def set_iata_city_code(self, id, city_iata_code):
+        put_endpoint = f"https://api.sheety.co/{SHEET_ID}/prices/{id}"
+        put_params = {
+            "price": {
+                "iataCode": city_iata_code
+            }
+        }
+        sheety_put = requests.put(url=put_endpoint, json=put_params, headers=HEADERS)
+        sheety_put.raise_for_status()
+        print(sheety_put.text)
+
