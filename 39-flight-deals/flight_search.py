@@ -4,8 +4,12 @@ import requests
 
 load_dotenv()
 TEQUILA_KEY = os.getenv("TEQUILA_KEY")
+SEARCH_KEY = os.getenv("SEARCH_KEY")
 HEADERS = {
     "apikey": TEQUILA_KEY
+}
+HEADERS_SEARCH = {
+    "apikey": SEARCH_KEY
 }
 
 class FlightSearch:
@@ -49,7 +53,7 @@ class FlightSearch:
             "max_stopovers": "0"
         }
 
-        response = requests.get(url="https://api.tequila.kiwi.com/v2/search", params=trip_params, headers=HEADERS)
+        response = requests.get(url="https://api.tequila.kiwi.com/v2/search", params=trip_params, headers=HEADERS_SEARCH)
         response.raise_for_status()
         return response.json()
 

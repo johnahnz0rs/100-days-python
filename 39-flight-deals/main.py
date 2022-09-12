@@ -46,7 +46,7 @@ for row in sheet_data:
 
 date_from = (datetime.today() + timedelta(days=1)).strftime("%d/%m/%Y")
 date_to = (datetime.today() + timedelta(days=181)).strftime("%d/%m/%Y")
-lol = my_fs.get_flights(fly_from="airport:LAX", fly_to="city:NYC", date_from=date_from, date_to=date_to)
+lol = my_fs.get_flights(fly_from="city:LON", fly_to="city:NYC", date_from=date_from, date_to=date_to)
 
 print(lol)
 
