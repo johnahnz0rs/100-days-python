@@ -32,3 +32,14 @@ class DataManager:
         sheety_put.raise_for_status()
         print(sheety_put.text)
 
+    def set_lowest_price(self, id, lowest_price):
+        put_endpoint = f"https://api.sheety.co/{SHEET_ID}/prices/{id}"
+        put_params = {
+            "price": {
+                "lowestPrice": lowest_price
+            }
+        }
+        sheety_put = requests.put(url=put_endpoint, json=put_params, headers=HEADERS)
+        sheety_put.raise_for_status()
+        print(sheety_put.text)
+

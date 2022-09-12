@@ -22,9 +22,12 @@ from datetime import datetime, timedelta
 
 my_dm = DataManager()
 my_fs = FlightSearch()
-
+my_fd = FlightData()
+my_nm = NotificationManager()
 
 sheet_data = my_dm.get_current_data()
+date_from = (datetime.today() + timedelta(days=1)).strftime("%d/%m/%Y")
+date_to = (datetime.today() + timedelta(days=181)).strftime("%d/%m/%Y")
 
 # check for city codes
 for row in sheet_data:
@@ -35,19 +38,20 @@ for row in sheet_data:
     #     print(row["iataCode"])
 
 
-    # search for flights
-    # date_from = (datetime.today() + timedelta(days=1)).strftime("%d/%m/%Y")
-    # date_to = (datetime.today() + timedelta(days=181)).strftime("%d/%m/%Y")
-    # lol = my_fs.get_flights(fly_from="LAX", fly_to=row["iataCode"], date_from=date_from, date_to=date_to)
-
-    # print(lol)
 
 
+# lol = my_fs.get_flights(fly_from="city:LAX", fly_to="city:NYC", date_from=date_from, date_to=date_to)
 
-date_from = (datetime.today() + timedelta(days=1)).strftime("%d/%m/%Y")
-date_to = (datetime.today() + timedelta(days=181)).strftime("%d/%m/%Y")
-lol = my_fs.get_flights(fly_from="city:LON", fly_to="city:NYC", date_from=date_from, date_to=date_to)
+# print(lol["data"][0]["price"])
 
-print(lol)
 
+for row in sheet_data:
+    price = my_fd.get_flights(fly_from="city:LAX", fly_to=f"city:{row['iataCode']}", date_from=date_from, date_to=date_to)
+    print(f"{row['city']}: ${price}")
+
+    if int(price) < int(row["lowestPrice"]):
+        my_dm.set_lowest_price(id=row["id"], lowest_price=price)
+        price_diff = int(row["lowestPrice"]) - int(price)
+        message = f"w00t lower price to {row['city']}: ${price}"
+        my_nm.send_alert(message=message)
 
