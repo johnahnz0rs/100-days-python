@@ -46,12 +46,42 @@ for row in sheet_data:
 
 
 for row in sheet_data:
-    price = my_fd.get_flights(fly_from="city:LAX", fly_to=f"city:{row['iataCode']}", date_from=date_from, date_to=date_to)
-    print(f"{row['city']}: ${price}")
+    # price = my_fd.get_flights(fly_from="city:LAX", fly_to=f"city:{row['iataCode']}", date_from=date_from, date_to=date_to)
+    flight_data = my_fd.get_flights(fly_from="city:LAX", fly_to=f"city:{row['iataCode']}", date_from=date_from, date_to=date_to)
 
-    if int(price) < int(row["lowestPrice"]):
+    # if flight_data["data"]:
+    #     print(flight_data)
+    # print(f"{row['iataCode']}\n{flight_data}")
+    
+
+
+    # price
+    # departure city name
+    # departure airport iata code
+    # arrival city name
+    # arrival airport iata code
+    # outbound date
+    # inbound date
+
+    if(flight_data["data"]):
+        price = flight_data["data"]["price"]
+        departure_city_name = flight_data["data"]["route"][0]["cityFrom"]
+        departure_airport_iata_code = flight_data["data"]["route"][0]["cityCodeFrom"]
+        arrival_city_name = flight_data["data"]["route"][0]["cityTo"]
+        arrival_airport_iata_code = flight_data["data"]["route"][0]["cityCodeTo"]
+        outbound_date = flight_data["data"]["route"][0]["local_departure"][:10]
+        inbound_date = flight_data["data"]["route"][1]["local_departure"][:10]
+
         my_dm.set_lowest_price(id=row["id"], lowest_price=price)
-        price_diff = int(row["lowestPrice"]) - int(price)
-        message = f"w00t lower price to {row['city']}: ${price}"
-        my_nm.send_alert(message=message)
+        message = f"w00t lower price to {row['city']} ${price}\n\n{departure_city_name} ({departure_airport_iata_code}) to/from {arrival_city_name} ({arrival_airport_iata_code})\nLeave on {outbound_date}, Return on {inbound_date}"
+        # my_nm.send_alert(message=message)
+        print(message)
+
+    # print(f"{row['city']}: ${price}")
+
+    # if int(price) < int(row["lowestPrice"]):
+    #     my_dm.set_lowest_price(id=row["id"], lowest_price=price)
+    #     price_diff = int(row["lowestPrice"]) - int(price)
+    #     message = f"w00t lower price to {row['city']}: ${price}"
+    #     my_nm.send_alert(message=message)
 

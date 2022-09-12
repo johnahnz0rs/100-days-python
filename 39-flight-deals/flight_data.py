@@ -36,11 +36,12 @@ class FlightData:
 
         response = requests.get(url="https://api.tequila.kiwi.com/v2/search", params=trip_params, headers=HEADERS)
         response.raise_for_status()
-        data = response.json()
-        lowest_price = data["data"][0]["price"] if data["data"] else "No flights available"
+        # data = response.json()
+        # lowest_price = data["data"][0]["price"] if data["data"] else "No flights available"
         # if data["data"]:
         #     lowest_price = data["data"][0]["price"]
         # else:
         #     lowest_price = "No flights available"
-        return lowest_price
+        # return lowest_price
+        return response.json()
 
