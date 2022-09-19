@@ -6,6 +6,17 @@
 	],
 	"settings": {
 		"python.terminal.executeInFileDir": true,
-		"python.defaultInterpreterPath": "/usr/local/bin/python3.9"
+		"python.defaultInterpreterPath": "/usr/local/bin/python3.9",
+		"liveSassCompile.settings.formats": [{
+			"format": "nested",
+			"extensionName": ".css",
+			"savePath": "~/"
+		},
+		{
+			"format": "compressed",
+			"extensionName": ".min.css",
+			"savePath": "~/"
+		}],
+		"liveSassCompile.settings.generateMap": false,
 	}
 }
