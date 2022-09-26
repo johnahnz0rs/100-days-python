@@ -12,4 +12,4 @@ article_count = driver.find_element(By.CSS_SELECTOR, "#bodyContent #mp-welcomeco
 print(article_count.text)
 
 
-# driver.quit()
+driver.quit()
