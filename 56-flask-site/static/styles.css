@@ -1,0 +1,14 @@
+#hero {
+    min-height: 400px;
+    /* background-color: red; */
+    /* background: url('iceberg3.png') center cover no-repeat; */
+    /* background: url('iceberg3.png') center contain; */
+    background-image: url('iceberg3.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#profile-pic {
+    max-height: 250px;
+}
