@@ -1,0 +1,33 @@
+#homepage {
+    /* margin: 0 8px; */
+    margin: 0;
+}
+.row {
+    padding: 0 8px;
+}
+.col {
+    padding: 8px 0;
+}
+#banner .col {
+    display: flex;
+    align-items: baseline;
+}
+#banner p {
+    margin-left: 12px;
+    font-size: 1.4em;
+}
+
+/* #hero { */
+    /* min-height: 400px; */
+    /* background-color: red; */
+    /* background: url('iceberg3.png') center cover no-repeat; */
+    /* background: url('iceberg3.png') center contain; */
+    /* background-image: url('iceberg3.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; */
+/* } */
+
+#profile-pic {
+    max-height: 250px;
+}
