@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guess your age</title>
+    <title>Blog</title>
 </head>
 <style>
     footer {
@@ -15,11 +15,27 @@
     footer p {
         text-align: center;
     }
+    .post {
+        border: 1px solid black;
+        padding: 0 8px;
+        margin: 8px 8px;
+    }
+    .post h2 {
+        margin-bottom: 4px;
+    }
+    .post h4 {
+        margin-top: 4px;
+    }
 </style>
 <body>
-    <h1>hi {{ name.title() }}</h1>
-    <h3>I think you are {{ gender }},</h3>
-    <h3>and maybe {{ age }} years old.</h3>
+    <h1>Blog</h1>
+    {% for post in posts: %}
+    <div class="post">
+        <h2>{{ post["title"] }}</h2>
+        <h4>{{ post["subtitle"] }}</h4>
+        <p>{{ post["body"] }}</p>
+    </div>
+    {% endfor %}
 
     <footer>
         <p>&copy; {{ copyright_year }} johnahnz0rs</p>
